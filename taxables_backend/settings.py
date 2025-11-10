@@ -103,6 +103,7 @@ DATABASES = {
         env="DATABASE_URL",
         default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
         conn_max_age=0 if DEBUG else 600,
+        ssl_require=True,
     )
 }
 
