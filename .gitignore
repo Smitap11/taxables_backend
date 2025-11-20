@@ -1,23 +1,30 @@
 # Python
 *.pyc
-__pycache__/
 *.pyo
 *.pyd
+__pycache__/
 *.sqlite3
 
-# Virtualenv
-vir_env/
-env/
+# Virtualenvs
 venv/
+.venv/
+vir_env/
 
-# Django static/media
-/staticfiles
-/media
+# Django static/media (collected)
+staticfiles/
+media/
 
-# IDE
+# Env files
+.env
+.env.*
+
+# IDE / OS
 .vscode/
 .idea/
-
-# OS
 .DS_Store
 Thumbs.db
+
+# Coverage / test
+.coverage
+htmlcov/
+.pytest_cache/
