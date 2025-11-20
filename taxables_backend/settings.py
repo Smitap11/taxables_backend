@@ -3,6 +3,8 @@ import os
 from pathlib import Path
 from corsheaders.defaults import default_headers
 import dj_database_url
+from dotenv import load_dotenv
+load_dotenv()
 
 # ---------------- Base ----------------
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -98,12 +100,16 @@ TEMPLATES = [
 WSGI_APPLICATION = "taxables_backend.wsgi.application"
 
 # ---------------- Database ----------------
+# Only require SSL when using Postgres; never for SQLite.
+DB_URL = os.getenv("DATABASE_URL", "").strip()
+IS_POSTGRES = DB_URL.startswith(("postgres://", "postgresql://"))
+
 DATABASES = {
     "default": dj_database_url.config(
         env="DATABASE_URL",
         default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
         conn_max_age=0 if DEBUG else 600,
-        ssl_require=True,
+        ssl_require=IS_POSTGRES,   # <<— key fix: no ssl for sqlite
     )
 }
 
@@ -131,7 +137,7 @@ REST_FRAMEWORK = {
     ],
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.IsAuthenticated",
-    ],  
+    ],
     "DEFAULT_FILTER_BACKENDS": [
         "django_filters.rest_framework.DjangoFilterBackend",
         "rest_framework.filters.SearchFilter",
